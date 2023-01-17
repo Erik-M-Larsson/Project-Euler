@@ -1,4 +1,26 @@
 import math
+import numpy as np
+from collections.abc import Iterable
+from typing import Any
+
+
+def permutations_repetition(iterable: Iterable[Any], n: int, /) -> list[list[Any]]:
+    """All permutations with repetition of n elements from iterable"""
+    λ = len(iterable)
+    return [
+        [iterable[int((row % λ ** col) / λ ** (col - 1))] for col in range(n, 0, -1)]
+        for row in range(λ ** n)
+    ]
+
+
+def prime_mask(N):
+    """Gives a bolean ndarray of for all integers up to N. True if prime number else False"""
+    primes = np.ones(N + 1, bool)
+    primes[0:2] = False
+    for i in range(2, int(N ** 0.5) + 1):
+        if primes[i]:
+            primes[2 * i :: i] = False
+    return primes
 
 
 def check_if_prime(n: int) -> bool:
