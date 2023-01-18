@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from itertools import count
 from collections.abc import Iterable
 from typing import Any
 
@@ -13,7 +14,7 @@ def permutations_repetition(iterable: Iterable[Any], n: int, /) -> list[list[Any
     ]
 
 
-def prime_mask(N):
+def prime_mask(N: int) -> np.ndarray[bool]:
     """Gives a bolean ndarray of for all integers up to N. True if prime number else False"""
     primes = np.ones(N + 1, bool)
     primes[0:2] = False
@@ -25,11 +26,29 @@ def prime_mask(N):
 
 def check_if_prime(n: int) -> bool:
     """Check if n is a prime number"""
+    if n < 2:
+        return False
+
     for i in range(2, int(math.sqrt(n) + 1)):
         if n % i == 0:
             return False
     else:
         return True
+
+
+def prime_generator(limit: int = None) -> int:
+    """Generates prime numbers in ascending order. If limit is given generator stops at limit"""
+
+    yield 2
+    if limit > 2:
+
+        for n in count(3, 2):
+
+            if check_if_prime(n):
+                yield n
+
+            if n >= limit:
+                break
 
 
 def find_largest_prime_factor(n: int) -> int:
@@ -44,7 +63,6 @@ def find_largest_prime_factor(n: int) -> int:
 
             if n % i == 0:
                 candidate_factor = n // i
-                # print("candidate_factor", candidate_factor)
 
                 if check_if_prime(candidate_factor):
                     return candidate_factor
@@ -65,6 +83,10 @@ def prime_factors(n: int, multiples: bool = True) -> list[int]:
             list_of_prime_factors.append(i)
             n /= i
             if n == 1:
-                return list_of_prime_factors
+                return (
+                    list_of_prime_factors
+                    if multiples
+                    else list(set(list_of_prime_factors))
+                )
 
     return list_of_prime_factors if multiples else list(set(list_of_prime_factors))
