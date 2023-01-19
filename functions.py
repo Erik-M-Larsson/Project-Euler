@@ -36,19 +36,16 @@ def check_if_prime(n: int) -> bool:
         return True
 
 
-def prime_generator(limit: int = None) -> int:
-    """Generates prime numbers in ascending order. If limit is given generator stops at limit"""
+def prime_generator(start: int = 2) -> int:
+    """Generates prime numbers in ascending order. If start value is given the first prime number >= start"""
 
-    yield 2
-    if limit > 2:
+    if check_if_prime(start):
+        yield start
 
-        for n in count(3, 2):
+    for n in count(start + 1, 2):
 
-            if check_if_prime(n):
-                yield n
-
-            if n >= limit:
-                break
+        if check_if_prime(n):
+            yield n
 
 
 def find_largest_prime_factor(n: int) -> int:
