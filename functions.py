@@ -39,10 +39,13 @@ def check_if_prime(n: int) -> bool:
 def prime_generator(start: int = 2) -> int:
     """Generates prime numbers in ascending order. If start value is given the first prime number >= start"""
 
-    if check_if_prime(start):
+    if start == 2:
         yield start
 
-    for n in count(start + 1, 2):
+    if start % 2 == 0:
+        start += 1
+
+    for n in count(start, 2):
 
         if check_if_prime(n):
             yield n
